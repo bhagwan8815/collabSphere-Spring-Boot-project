@@ -1,0 +1,84 @@
+package com.ranab.CollabSphere.service;
+
+import com.ranab.CollabSphere.model.Comment;
+import com.ranab.CollabSphere.model.Issue;
+import com.ranab.CollabSphere.model.User;
+import com.ranab.CollabSphere.repository.CommentRepository;
+import com.ranab.CollabSphere.repository.IssueRepository;
+import com.ranab.CollabSphere.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CommentsServiceImpl implements CommentsService{
+
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private IssueRepository issueRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public Comment createComment(Long issueId, Long userId, String comment) throws Exception {
+        Optional<Issue> issueOptional = issueRepository.findById(issueId);
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(issueOptional.isEmpty()){
+            throw new Exception("Issue not found with id :" + issueId);
+        }
+        if(userOptional.isEmpty()){
+            throw new Exception("User not found with id :"+ userId);
+        }
+        Issue issue= issueOptional.get();
+        User user = userOptional.get();
+
+        Comment comment1 = new Comment();
+
+        comment1.setIssue(issue);
+        comment1.setUser(user);
+        comment1.setCreatedDateTime(LocalDateTime.now());
+        comment1.setContent(comment);
+
+        Comment savedComment = commentRepository.save(comment1);
+        issue.getComments().add(savedComment);
+        return savedComment;
+    }
+
+
+
+    @Override
+    public void deleteComments(Long commentId, Long userId) throws Exception {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(commentOptional.isEmpty()){
+            throw new Exception("Issue not found with id :" + commentId);
+        }
+
+
+        if(userOptional.isEmpty()){
+            throw new Exception("User not found with id :"+ userId);
+        }
+
+        Comment comment = commentOptional.get();
+        User user = userOptional.get();
+
+        if(comment.getUser().equals(user)){
+            commentRepository.delete(comment);
+        }else {
+            throw new Exception("User does not have permission to delete this comments :");
+        }
+
+
+    }
+
+    @Override
+    public List<Comment> findCommentByIssueId(Long issueId) {
+        return commentRepository.findByIssueId(issueId);
+    }
+}
