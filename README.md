@@ -52,20 +52,20 @@ collabSphere-Spring-Boot-project/
 
 
 # Configure application.properties
-spring.datasource.url=jdbc:mysql://localhost:3306/collabsphere
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+- spring.datasource.url=jdbc:mysql://localhost:3306/collabsphere
+- spring.datasource.username=your_username
+- spring.datasource.password=your_password
+- spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # Hibernate JPA Configuration
-spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+- spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+- spring.jpa.hibernate.ddl-auto=update
+- spring.jpa.show-sql=true
 
  # email configuration
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=ADD_YOUR_EMAIL
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
+- spring.mail.host=smtp.gmail.com
+- spring.mail.port=587
+- spring.mail.username=ADD_YOUR_EMAIL
+- spring.mail.properties.mail.smtp.auth=true
+- spring.mail.properties.mail.smtp.starttls.enable=true
 
